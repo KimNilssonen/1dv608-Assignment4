@@ -10,6 +10,9 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
+	public function __construct(LoginModel $loginModel){
+		$this->loginModel = $loginModel;
+	}
 	
 
 	/**
@@ -19,11 +22,14 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
+	 
 	public function response() {
-		$message = '';
+		
+		$message = $this->loginModel->modelResponse();
 		
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
+		
 		return $response;
 	}
 
@@ -47,6 +53,7 @@ class LoginView {
 	* @return  void, BUT writes to standard output!
 	*/
 	private function generateLoginFormHTML($message) {
+	
 		return '
 			<form method="post" > 
 				<fieldset>
@@ -66,6 +73,26 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+	
+	public function isPosted(){
+		
+		if(isset($_POST[self::$login])){
+			echo "isPosted - true";
+			return true;
+		}
+		else{
+			echo "isPosted - false";
+			return false;
+		}
+	}
+	
+	public function getUsername(){
+		return $_POST[self::$name];
+	}
+	
+	public function getPassword(){
+		return $_POST[self::$password];
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
