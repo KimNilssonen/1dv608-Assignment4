@@ -14,9 +14,6 @@ class LoginModel{
         trim($name);
         trim($password);
         
-        var_dump($name);
-        var_dump($password);
-        
         if($name == $correctUsername && $password == $correctPassword){
             $message = 'You have entered the correct login details';
         }

@@ -78,11 +78,9 @@ class LoginView {
 	public function isPosted(){
 		
 		if(isset($_POST[self::$login])){
-			echo "isPosted - true";
 			return true;
 		}
 		else{
-			echo "isPosted - false";
 			return false;
 		}
 	}
