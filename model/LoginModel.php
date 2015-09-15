@@ -1,12 +1,19 @@
 <?php
-
+session_start();
 class LoginModel{
     
     private $message;
     
+   public function __construct(){
+        if (!isset($_SESSION['UserLoggedIn'])) {
+            $_SESSION['UserLoggedIn'] = false;
+        }
+   }
+   
+   
+    //Check name and password, return a message.
     public function Check($name, $password){
         
-        //TODO: Check name and password, return a string with correct message.
         $correctUsername = 'Admin';
         $correctPassword = 'Password';
         $message = '';
@@ -15,8 +22,13 @@ class LoginModel{
         trim($password);
         
         if($name == $correctUsername && $password == $correctPassword){
-            $message = 'You have entered the correct login details';
+            
+            $message = 'Welcome';
+            
+            $_SESSION['UserLoggedIn'] = true;
+            $this->isUserLoggedIn();
         }
+        
         else if($name == ''){
             $message = 'Username is missing';
         }
@@ -33,4 +45,29 @@ class LoginModel{
     public function modelResponse(){
         return $this->message;
     }
-}
+    
+    public function logout(){
+        
+        $message = 'Bye bye!';
+        $this->message = $message;
+        
+        $_SESSION['UserLoggedIn'] = false;
+        session_destroy();
+    }
+    
+    public function isUserLoggedIn(){
+        
+        if(isset($_SESSION['UserLoggedIn'])){
+            
+            if($_SESSION['UserLoggedIn']){
+                return $_SESSION['UserLoggedIn'];
+            }
+        }
+        return false;
+    }
+    
+    public function clearMessage(){
+        $message = '';
+        $this->message = $message;
+    }
+}    

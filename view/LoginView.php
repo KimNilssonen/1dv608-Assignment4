@@ -9,7 +9,9 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-
+	
+	private static $saveName = '';
+	
 	public function __construct(LoginModel $loginModel){
 		$this->loginModel = $loginModel;
 	}
@@ -25,10 +27,19 @@ class LoginView {
 	 
 	public function response() {
 		
+		$response = '';
+		$message = '';
+		
 		$message = $this->loginModel->modelResponse();
 		
-		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		// If status is true, render out logout button.
+		if($this->loginModel->isUserLoggedIn()) {
+			$response .= $this->generateLogoutButtonHTML($message);
+		}
+		// Else, render form.
+		else{
+			$response = $this->generateLoginFormHTML($message);
+		}
 		
 		return $response;
 	}
@@ -53,7 +64,6 @@ class LoginView {
 	* @return  void, BUT writes to standard output!
 	*/
 	private function generateLoginFormHTML($message) {
-	
 		return '
 			<form method="post" > 
 				<fieldset>
@@ -61,7 +71,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . self::$saveName. '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -78,10 +88,17 @@ class LoginView {
 	public function isPosted(){
 		
 		if(isset($_POST[self::$login])){
+			self::$saveName = $_POST[self::$name];
 			return true;
 		}
-		else{
+		else {
 			return false;
+		}
+	}
+	
+	public function logout(){
+		if(isset($_POST[self::$logout])){
+			return true;
 		}
 	}
 	

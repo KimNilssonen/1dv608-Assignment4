@@ -28,5 +28,5 @@ $loginController = new LoginController($v, $loginModel);
 
 $loginController->Start();
 
-$lv->render(false, $v, $dtv);
+$lv->render($loginModel->isUserLoggedIn(), $v, $dtv);
 
