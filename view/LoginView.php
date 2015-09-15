@@ -31,7 +31,7 @@ class LoginView {
 		$message = '';
 		
 		$message = $this->loginModel->modelResponse();
-		
+
 		// If status is true, render out logout button.
 		if($this->loginModel->isUserLoggedIn()) {
 			$response .= $this->generateLogoutButtonHTML($message);

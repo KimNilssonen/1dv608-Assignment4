@@ -19,7 +19,7 @@ class LoginController{
             $this->username = $this->view->getUsername();
             $this->password = $this->view->getPassword();
             
-            /*return*/ $this->model->Check($this->username, $this->password);
+            $this->model->Check($this->username, $this->password);
         }
         
         else if($this->view->logout()){

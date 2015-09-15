@@ -22,10 +22,14 @@ class LoginModel{
         trim($password);
         
         if($name == $correctUsername && $password == $correctPassword){
+            if(isset($_SESSION['UserLoggedIn']) && $_SESSION['UserLoggedIn']){
+                $message = '';
+            }
+            else {
+                $_SESSION['UserLoggedIn'] = true;
+                $message = 'Welcome';
+            }
             
-            $message = 'Welcome';
-            
-            $_SESSION['UserLoggedIn'] = true;
             $this->isUserLoggedIn();
         }
         
@@ -47,20 +51,24 @@ class LoginModel{
     }
     
     public function logout(){
-        
-        $message = 'Bye bye!';
+        if(isset($_SESSION['UserLoggedIn']) && $_SESSION['UserLoggedIn']){
+                $message = 'Bye bye!';
+                $_SESSION['UserLoggedIn'] = false;
+        }
+        else {
+            $message = '';
+        }
+
         $this->message = $message;
         
-        $_SESSION['UserLoggedIn'] = false;
+        
         session_destroy();
     }
     
     public function isUserLoggedIn(){
-        
         if(isset($_SESSION['UserLoggedIn'])){
-            
             if($_SESSION['UserLoggedIn']){
-                return $_SESSION['UserLoggedIn'];
+                return true;
             }
         }
         return false;
