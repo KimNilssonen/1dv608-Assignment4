@@ -12,6 +12,7 @@ class LoginView {
 	
 	private static $saveName = '';
 	
+	
 	public function __construct(LoginModel $loginModel){
 		$this->loginModel = $loginModel;
 	}
@@ -30,18 +31,20 @@ class LoginView {
 		$response = '';
 		$message = '';
 		
-		$message = $this->loginModel->modelResponse();
-
-		// If status is true, render out logout button.
-		if($this->loginModel->isUserLoggedIn()) {
-			$response .= $this->generateLogoutButtonHTML($message);
-		}
-		// Else, render form.
-		else{
-			$response = $this->generateLoginFormHTML($message);
+		if($this->isPosted() || $this->logout())
+		{
+			$message = $this->statusMessage;
 		}
 		
+		if($this->loginModel->isUserLoggedIn()){
+			$response .= $this->generateLogoutButtonHTML($message);	
+		}
+		else {
+			$response = $this->generateLoginFormHTML($message);
+		}
+			
 		return $response;
+		
 	}
 
 	/**
@@ -83,6 +86,10 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+	
+	public function setMessage($e){
+		$this->statusMessage = $e;
 	}
 	
 	public function isPosted(){

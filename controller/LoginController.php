@@ -19,13 +19,19 @@ class LoginController{
             $this->username = $this->view->getUsername();
             $this->password = $this->view->getPassword();
             
-            $this->model->Check($this->username, $this->password);
+            try {
+                $this->model->Check($this->username, $this->password);
+    	        $this->view->setMessage('Welcome');
+            }
+            catch (Exception $e){
+                $this->view->setMessage($e->getMessage());
+            }
         }
         
         else if($this->view->logout()){
+            $this->view->setMessage('Bye bye!');
             $this->model->logout();
         }
         
     }
-
 }
