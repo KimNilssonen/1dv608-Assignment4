@@ -7,6 +7,7 @@
     require_once('view/LayoutView.php');
 //CONTROLLER...
     require_once('controller/LoginController.php');
+    require_once('controller/updateSession.php');
 //MODEL...
     require_once('model/LoginModel.php');
 
@@ -23,7 +24,8 @@ $dtv = new DateTimeView();
 $lv = new LayoutView();
 
 //CREATE OBJECTS OF THE CONTROLLER
-$loginController = new LoginController($v, $loginModel);
+$updateSession = new UpdateSession();
+$loginController = new LoginController($v, $loginModel, $updateSession);
 
 
 $loginController->Start();

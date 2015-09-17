@@ -12,7 +12,6 @@ class LoginView {
 	
 	private static $saveName = '';
 	
-	
 	public function __construct(LoginModel $loginModel){
 		$this->loginModel = $loginModel;
 	}
@@ -31,6 +30,7 @@ class LoginView {
 		$response = '';
 		$message = '';
 		
+		// If there is a post with login or logout button, updates the message.
 		if($this->isPosted() || $this->logout())
 		{
 			$message = $this->statusMessage;
@@ -42,9 +42,9 @@ class LoginView {
 		else {
 			$response = $this->generateLoginFormHTML($message);
 		}
-			
-		return $response;
 		
+		return $response;
+
 	}
 
 	/**
@@ -88,12 +88,13 @@ class LoginView {
 		';
 	}
 	
+	// This function is used for all exceptions and messages so that they can be presented to the user.
 	public function setMessage($e){
 		$this->statusMessage = $e;
 	}
 	
+	// Checks if the login button is used in the post and returns true if it is.
 	public function isPosted(){
-		
 		if(isset($_POST[self::$login])){
 			self::$saveName = $_POST[self::$name];
 			return true;
@@ -103,6 +104,7 @@ class LoginView {
 		}
 	}
 	
+	// Same as login but for the logout button.
 	public function logout(){
 		if(isset($_POST[self::$logout])){
 			return true;
@@ -117,9 +119,9 @@ class LoginView {
 		return $_POST[self::$password];
 	}
 	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
-		//RETURN REQUEST VARIABLE: USERNAME
-	}
+	// //CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	// private function getRequestUserName() {
+	// 	//RETURN REQUEST VARIABLE: USERNAME
+	// }
 	
 }
