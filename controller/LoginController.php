@@ -5,16 +5,27 @@ class LoginController{
     private $view;
     private $model;
     private $updateSession;
+    private $layoutView;
+    private $dateTimeView;
     
-    public function __construct(LoginView $view, LoginModel $model, UpdateSession $updateSession){
+    public function __construct(LoginView $view, LoginModel $model, UpdateSession $updateSession, LayoutView $layoutView, DateTimeView $dateTimeView){
         
         $this->view = $view;
         $this->model = $model;
         $this->updateSession = $updateSession;
+        $this->layoutView = $layoutView;
+        $this->dateTimeView = $dateTimeView;
         
     }
     
-    public function Start(){
+    public function start(){
+        
+        $this->userPost();
+        $this->layoutView->render($this->model->isUserLoggedIn(), false, $this->view, $this->dateTimeView);
+        
+    }
+    
+    public function userPost() {
         
         //Check if something is posted then pass on the information.
         if($this->view->isPosted()){
@@ -22,7 +33,7 @@ class LoginController{
             $this->password = $this->view->getPassword();
             
             try {
-                $this->model->Check($this->username, $this->password);
+                $this->model->check($this->username, $this->password);
                 
                 // Updates the message in loginView and logs in the user in model.
     	        if($this->updateSession->isUpdated()){
@@ -53,6 +64,5 @@ class LoginController{
                 $this->view->setMessage($e->getMessage());
             }
         }
-        
     }
 }

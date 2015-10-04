@@ -10,12 +10,6 @@ class LoginModel{
         if (!isset($_SESSION['UserLoggedIn'])) {
             $_SESSION['UserLoggedIn'] = false;
         }
-        
-        // May use this somehow to make the resubmit form dissappear.
-//$_SERVER['HTTP_HOST'] is the actual adress while the $_SERVER['PHP_SELF'] is the current page, example index.php.
-// 	$url = 'http://' .$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-// 	$this->url = $url;
-        
    }
    
    
