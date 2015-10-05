@@ -32,15 +32,14 @@ class MasterController {
         
         //CREATE OBJECTS OF THE CONTROLLER
         $updateSession = new UpdateSession();
-        $registerController = new RegisterController($registerView, $registerModel);
+        $registerController = new RegisterController($registerView, $registerModel, $layoutView, $dateTimeView);
         $loginController = new LoginController($view, $loginModel, $updateSession, $layoutView, $dateTimeView);
 
 
-    	//$actualURL = 'http://' .$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
     	$uri = $_SERVER['REQUEST_URI'];
-    	$explodedURI = explode('?', $uri);
+    	$uri = explode('?', $uri);
 	    
-	    if($explodedURI == 'register') {
+	    if(count($uri) > 1 && $uri[1] == 'register') {
 	        $registerController->start();
 	    }
 	    else {

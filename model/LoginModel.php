@@ -14,7 +14,7 @@ class LoginModel{
    
    
     //Check name and password, return a message.
-    public function Check($name, $password){
+    public function check($name, $password){
         
         $correctUsername = 'Admin';
         $correctPassword = 'Password';
