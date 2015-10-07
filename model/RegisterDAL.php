@@ -30,6 +30,8 @@ class RegisterDAL {
         
         // Save the serialized array to the datafile.
         file_put_contents($this->dataFile, $serializedArray);
+        
+        $_SESSION['registeredUser'] = $this->user->getName();
     }
     
     

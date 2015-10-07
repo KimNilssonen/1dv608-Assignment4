@@ -7,6 +7,7 @@ class registerView {
 	private static $register = 'RegisterView::Register';
 	private static $saveName = '';
 	private static $message = 'RegisterView::Message';
+	private static $statusMessage;
 	
 	
 	public function response() {
@@ -16,7 +17,7 @@ class registerView {
 		
 	
 		if($this->isPosted()) {
-			$message = $this->statusMessage;
+			$message = self::$statusMessage;
 		}
 		
 		$response = $this->generateRegisterForm($message);	
@@ -37,11 +38,11 @@ class registerView {
 	
 	// This function is used for all exceptions and messages so that they can be presented to the user.
 	public function setErrorMessage($e){
-		$this->statusMessage = $e;
+		self::$statusMessage = $e;
 	}
 	
 	public function showSuccessMessage() {
-		$this->statusMessage = 'Registered new user.';
+		self::$statusMessage = 'Registered new user.';
 	}
 	
 	public function getUsername() {

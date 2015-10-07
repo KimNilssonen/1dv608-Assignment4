@@ -28,6 +28,7 @@ class RegisterModel {
         }
         
         if($name != strip_tags($name)) {
+            strip_tags($name);
             throw new Exception('Username contains invalid characters.');
         }
         

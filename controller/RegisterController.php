@@ -39,8 +39,6 @@ class RegisterController {
                 // Send the new user to addUser funcion in RegisterDAL to be added in array and file.
                 $this->registerDAL->addUser($user);
                 
-                 $_SESSION['registeredUser'] = $this->username;
-                
                 // If success, go back to index.
                 $link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
                 header("Location:$link");

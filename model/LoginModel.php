@@ -14,7 +14,7 @@ class LoginModel{
         if (!isset($_SESSION['UserLoggedIn'])) {
             $_SESSION['UserLoggedIn'] = false;
         }
-   }
+    }
    
    
     //Check name and password, return a message.
