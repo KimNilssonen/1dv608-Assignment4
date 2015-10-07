@@ -4,11 +4,14 @@ class RegisterController {
     
     private $registerView;
     private $registerModel;
+    private $registerDAL;
     private $layoutView;
+    private $dateTimeView;
     
-    public function __construct(RegisterView $registerView, RegisterModel $registerModel, LayoutView $layoutView, DateTimeView $dateTimeView) {
+    public function __construct(RegisterView $registerView, RegisterModel $registerModel, RegisterDAL $registerDAL, LayoutView $layoutView, DateTimeView $dateTimeView) {
         $this->registerView = $registerView;
         $this->registerModel = $registerModel;
+        $this->registerDAL = $registerDAL;
         $this->layoutView = $layoutView;
         $this->dateTimeView = $dateTimeView;
     }
@@ -29,46 +32,24 @@ class RegisterController {
             
             
             try {
-                $this->registerModel->check($this->username, $this->password, $this->passwordRepeat);
-                $this->registerView->setMessage('Det funkar typ.');
-            }
-            catch (Exception $e) {
-                $this->registerView->setMessage($e->getMessage());
-            }
-            
-            
-        //     try {
-        //         $this->model->check($this->username, $this->password);
                 
-        //         // Updates the message in loginView and logs in the user in model.
-    	   //     if($this->updateSession->isUpdated()){
-    	   //         $this->view->setMessage('Welcome');
-    	   //     }
-    	   //     else{
-    	   //         $this->view->setMessage('');
-    	   //     }
-        //     }
-        //     catch (Exception $e){
-        //         $this->view->setMessage($e->getMessage());
-        //     }
-        // }
-        
-        // // Updates the message in loginView and logs out the user in model.
-        // else if($this->view->logout()) {
-        //     try{
-        //         $this->model->logout();
-        //         if(!$this->updateSession->isUpdated()){
-    	   //         $this->view->setMessage('Bye bye!');
-    	            
-    	   //     }
-    	   //     else{
-    	   //         $this->view->setMessage('');
-    	   //     }         
-        //     }
-        //     catch (Exception $e){
-        //         $this->view->setMessage($e->getMessage());
-        //     }
+                // If this goes well, a new user will be returned.
+                $user = $this->registerModel->check($this->username, $this->password, $this->passwordRepeat, $this->registerDAL);
+                
+                // Send the new user to addUser funcion in RegisterDAL to be added in array and file.
+                $this->registerDAL->addUser($user);
+                
+                 $_SESSION['registeredUser'] = $this->username;
+                
+                // If success, go back to index.
+                $link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+                header("Location:$link");
+            }
             
+            // Catch errors and set messages depending on which error that happend.
+            catch (Exception $e) {
+                $this->registerView->setErrorMessage($e->getMessage());
+            }
         }
         
     }

@@ -11,6 +11,7 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	
 	private static $saveName = '';
+	private $statusMessage;
 	
 	public function __construct(LoginModel $loginModel){
 		$this->loginModel = $loginModel;
@@ -30,9 +31,8 @@ class LoginView {
 		$response = '';
 		$message = '';
 		
-		// If there is a post with login or logout button, updates the message.
-		if($this->isPosted() || $this->logout())
-		{
+		if($this->statusMessage != null) {
+
 			$message = $this->statusMessage;
 		}
 		
@@ -93,10 +93,27 @@ class LoginView {
 		$this->statusMessage = $e;
 	}
 	
+	public function showWelcomeMessage(){
+		$this->statusMessage = 'Welcome';
+	}
+	
+	public function showByeMessage(){
+		$this->statusMessage = 'Bye bye!';
+	}
+	
+	public function showEmptyMessage(){
+		$this->statusMessage = '';
+	}
+	
+	public function showRegisteredUser() {
+		self::$saveName = $_SESSION['registeredUser'];
+		$this->statusMessage = 'Registered a new user';
+	}
+	
 	// Checks if the login button is used in the post and returns true if it is.
 	public function isPosted(){
 		if(isset($_POST[self::$login])){
-			self::$saveName = $_POST[self::$name];
+			self::$saveName = strip_tags($_POST[self::$name]);
 			return true;
 		}
 		else {

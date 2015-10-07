@@ -20,6 +20,12 @@ class LoginController{
     
     public function start(){
         
+        if(isset($_SESSION['registeredUser']))
+        {
+            $this->view->showRegisteredUser();
+            unset($_SESSION['registeredUser']);
+        }
+        
         $this->userPost();
         $this->layoutView->render($this->model->isUserLoggedIn(), false, $this->view, $this->dateTimeView);
         
@@ -37,10 +43,10 @@ class LoginController{
                 
                 // Updates the message in loginView and logs in the user in model.
     	        if($this->updateSession->isUpdated()){
-    	            $this->view->setMessage('Welcome');
+    	            $this->view->showWelcomeMessage();
     	        }
     	        else{
-    	            $this->view->setMessage('');
+    	            $this->view->showEmptyMessage();
     	        }
             }
             catch (Exception $e){
@@ -53,11 +59,11 @@ class LoginController{
             try{
                 $this->model->logout();
                 if(!$this->updateSession->isUpdated()){
-    	            $this->view->setMessage('Bye bye!');
+    	            $this->view->showByeMessage();
     	            
     	        }
     	        else{
-    	            $this->view->setMessage('');
+    	            $this->view->showEmptyMessage();
     	        }         
             }
             catch (Exception $e){

@@ -27,7 +27,7 @@ class registerView {
 	public function isPosted() {
 		
 		if(isset($_POST[self::$register])){
-			self::$saveName = $_POST[self::$name];
+			self::$saveName = strip_tags($_POST[self::$name]);
 			return true;
 		}
 		else {
@@ -36,8 +36,12 @@ class registerView {
 	}
 	
 	// This function is used for all exceptions and messages so that they can be presented to the user.
-	public function setMessage($e){
+	public function setErrorMessage($e){
 		$this->statusMessage = $e;
+	}
+	
+	public function showSuccessMessage() {
+		$this->statusMessage = 'Registered new user.';
 	}
 	
 	public function getUsername() {
@@ -55,6 +59,7 @@ class registerView {
 	
 	private function generateRegisterForm($message) {
 		return '
+		<h2>Register new user</h2>
 			<form method="post" > 
 				<fieldset>
 					<legend>Register a new user - Write username and password</legend>

@@ -1,12 +1,16 @@
 <?php
-session_start();
+
 class LoginModel{
     
-    private $message;
+    // private $message;
 //private $url;
 
+    private $registerDAL; 
     
-   public function __construct(){
+    public function __construct(RegisterDAL $registerDAL){
+       
+       $this->registerDAL = $registerDAL;
+       
         if (!isset($_SESSION['UserLoggedIn'])) {
             $_SESSION['UserLoggedIn'] = false;
         }
@@ -16,31 +20,38 @@ class LoginModel{
     //Check name and password, return a message.
     public function check($name, $password){
         
-        $correctUsername = 'Admin';
-        $correctPassword = 'Password';
-        $message = '';
+        $this->users = $this->registerDAL->getUsers();
+        
+        if(empty($this->users)) {
+            $this->users = array();
+        }
         
         // Trim away spaces since I use empty() on the name and password.
         trim($name);
         trim($password);
         
-        // If the name and password are correct...
-        if($name == $correctUsername && $password == $correctPassword){
+        foreach($this->users as $user) {
             
-            // ...sets the session to true. Then returns true to the controller.
-            $_SESSION['UserLoggedIn'] = true;
-            return $this->isUserLoggedIn();
+            // If the name and password are correct...
+            if($name == $user->getName() && $password == $user->getPassword()){
+                // ...sets the session to true. Then returns true to the controller.
+                $_SESSION['UserLoggedIn'] = true;
+                return $this->isUserLoggedIn();
+            }
         }
         
-        else if(empty($name)){
-            throw new Exception('Username is missing');
+        if(!$this->isUserLoggedIn()) {
+            if(empty($name)){
+                throw new Exception('Username is missing');
+            }
+            else if(empty($password)){
+                throw new Exception('Password is missing');
+            }
+            else{
+                throw new Exception('Wrong name or password');
+            }
         }
-        else if(empty($password)){
-            throw new Exception('Password is missing');
-        }
-        else{
-            throw new Exception('Wrong name or password');
-        }
+        
     }
     
     public function logout(){
