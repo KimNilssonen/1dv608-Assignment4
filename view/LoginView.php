@@ -107,7 +107,7 @@ class LoginView {
 	
 	public function showRegisteredUser() {
 		self::$saveName = $_SESSION['registeredUser'];
-		$this->statusMessage = 'Registered a new user';
+		$this->statusMessage = 'Registered new user.';
 	}
 	
 	// Checks if the login button is used in the post and returns true if it is.

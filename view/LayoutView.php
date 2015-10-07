@@ -39,7 +39,7 @@ class LayoutView {
       return '<a href="?">Back to login</a>';
     }
     else {
-      return '<a href="?register">Register new user.</a>';
+      return '<a href="?register">Register a new user</a>';
     }
     
   }
